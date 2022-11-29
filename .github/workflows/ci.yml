@@ -1,9 +1,8 @@
 name: ci
 
 on:
-  push:
-    branches:
-      - "main"
+  release:
+    types: [published]
 
 jobs:
   docker:
@@ -27,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_REPO }}:latest,${{ secrets.DOCKERHUB_REPO }}:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_REPO }}:latest,${{ secrets.DOCKERHUB_REPO }}:${{ github.sha }},${{ secrets.DOCKERHUB_REPO }}:${{ github.event.release.name }}
       - name: Image digest
         run: echo ${{ steps.build.outputs.digest }}
